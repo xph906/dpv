@@ -1,7 +1,7 @@
 from scc import findSCC
 
 """
-The 2Sat solver.
+The 2-Sat solver.
 
 Assuming no unique clause
 Arguments:
@@ -16,7 +16,7 @@ def solve2Sat(clauses, n):
     # ^xi => graph[i-1 + n]
     graph = [[] for i in range(2*n)]
     for clause in clauses:
-        # e.g., (1,-2) means x1 or ~x2
+        # e.g., (1,-2) means (x1 V ~x2)
         v1 = clauseValueToNodeIndex(clause[0], n)
         neg_v1 = clauseValueToNodeIndex(-clause[0], n)
         v2 = clauseValueToNodeIndex(clause[1], n)
@@ -31,32 +31,37 @@ def solve2Sat(clauses, n):
     # Step 2: scc
     # smallest scc index is the sink, largest is the source
     scc = findSCC(graph)
-    print(scc)
 
     # Step 3: group nodes based on scc index.
     # E.g., scc_list[2] is all the nodes belong to the second SCC
-    #
     max_scc = max(scc)
     scc_list = [[] for i in range(max_scc+1)]
     for i in range(len(scc)):
         scc_list[scc[i]].append(i)
 
     # Step 4: attempt to assign values to the variables
-    first = 1
-    last = max_scc
+    first = 1      # always points to the sink
+    last = max_scc # always points to the source
+    if first == last:
+        return None
+
     assignment = [None for i in range(n)]
     while first < last:
+        # Assign varaibles in the sink component to make sure they are resolved
+        # to True
         for v in scc_list[first]:
             idx = v % n
+            # If the value has been set already, it means infeasible.
             if assignment[idx] != None:
                 return None
+
             if v >= n:
                 assignment[idx] = False
             else:
                 assignment[idx] = True
-        # Get rid off sink
+        # Get rid off the sink
         first += 1
-        # Get rid off source
+        # Get rid off the source
         last -= 1
 
     return assignment
