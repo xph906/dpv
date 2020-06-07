@@ -59,7 +59,7 @@ def dfsGraph(graph, nodes):
     for node in nodes:
         if visited[node]:
             continue
-        explore(node, graph, visited, postorder_idx, postorders, scc_idx, scc)
+        postorder_idx = explore(node, graph, visited, postorder_idx, postorders, scc_idx, scc)
         scc_idx += 1
 
 
@@ -100,6 +100,7 @@ def reverseGraph(graph):
 
     for src in range(n):
         for dst in graph[src]:
+            # print(src," => ", dst)
             r_graph[dst].append(src)
 
     return r_graph
@@ -120,10 +121,20 @@ def buildDpvFigure310():
     graph[11] = [10]
     return graph
 
+def buildDpvFigure2():
+    graph = [[] for i in range(4)]
+    graph[0] = [1, 3]
+    graph[1] = [2]
+    graph[2] = [1]
+    graph[3] = [0,2]
+    return graph
+
 def main():
     graph = buildDpvFigure310()
+    # graph = buildDpvFigure2()
     scc = findSCC(graph)
     for i in range(len(graph)):
         print(i, scc[i])
 
-main()
+if __name__ == "__main__":
+    main()
