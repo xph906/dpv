@@ -129,9 +129,38 @@ def buildDpvFigure2():
     graph[3] = [0,2]
     return graph
 
+def buildDpvFigure34II():
+    graph = [[] for i in range(9)]
+    graph[0] = [1]
+    graph[1] = [2,4]
+    graph[2] = [5]
+    graph[3] = [7]
+    graph[4] = [0,7]
+    graph[5] = [8]
+    graph[6] = [3]
+    graph[7] = [5,6,8]
+    graph[8] = [7]
+    return graph
+
+def buildDpvFigure34I():
+    graph = [[] for i in range(10)]
+    graph[0] = [2,7]
+    graph[1] = [0,6]
+    graph[2] = [3]
+    graph[3] = [5]
+    graph[4] = [0,8]
+    graph[5] = [9]
+    graph[6] = [8]
+    graph[7] = [5,6]
+    graph[8] = [7]
+    graph[9] = [2]
+    return graph
+
 def main():
-    graph = buildDpvFigure310()
+    # graph = buildDpvFigure310()
     # graph = buildDpvFigure2()
+    # graph = buildDpvFigure34II()
+    graph = buildDpvFigure34I()
     scc = findSCC(graph)
     for i in range(len(graph)):
         print(i, scc[i])
